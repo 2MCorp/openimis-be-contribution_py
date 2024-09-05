@@ -3,20 +3,19 @@ from django.conf import settings
 
 from datetime import datetime
 
+def is_postgresql(apps, schema_editor):
+    return schema_editor.connection.vendor == 'postgresql'
+
 
 class Migration(migrations.Migration):
     dependencies = [
         ('contribution', '0007_add_missing_fields_not_mssql'),
     ]
-    operations = []
-    # For MSSQL These changes were added through raw sql, to keep consistency with existing databases it couldn't be
-    # changed in postgres sql script.
-    
-    if not settings.MSSQL:
-        operations.append(
+    operations = [
             migrations.AlterField(
                 model_name='premium',
                 name='created_date',
                 field=models.DateTimeField(db_column='CreatedDate', default=datetime.now()),
-            ))
+            ) if is_postgresql else migrations.RunPython(lambda x, y: None)
+    ]
         

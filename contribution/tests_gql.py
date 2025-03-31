@@ -21,14 +21,10 @@ import datetime
 
 # from openIMIS import schema
 
-
-@dataclass
-class DummyContext:
-    """ Just because we need a context to generate. """
-    user: User
+from core.models.openimis_graphql_test_case import openIMISGraphQLTestCase, BaseTestContext as DummyContext
 
 
-class ContributionGQLTestCase(GraphQLTestCase):
+class ContributionGQLTestCase(openIMISGraphQLTestCase):
     GRAPHQL_URL = f'/{settings.SITE_ROOT()}graphql'
     # This is required by some version of graphene but is never used. It should be set to the schema but the import
     # is shown as an error in the IDE, so leaving it as True.
